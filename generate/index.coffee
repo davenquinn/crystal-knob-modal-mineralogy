@@ -1,14 +1,17 @@
 global.d3 = require 'd3'
 require '../d3-ternary/src/ternary'
-fs = require 'fs'
-savage = require 'savage-svg'
 createFields = require './fields'
 createArrows = require './arrows'
 plotData = require './data'
+{exec} = require 'child_process'
+Promise = require 'bluebird'
+run Promise.promisify exec
 
 # Get data from Python script
-_ = fs.readFileSync('/dev/stdin').toString()
-data = JSON.parse(_)
+pipeline = (el, callback)->
+  run("./modal-mineralogy.py", cwd: "#{__dirname}/..")
+  .then JSON.parse
+  .tap console.log data
 
 graticule = d3.ternary.graticule()
   .majorInterval 0.1
@@ -40,7 +43,7 @@ sz =
   width: 500
   height: 500
 
-createPlot = (el)->
+createPlot = (el, callback)->
 
   svg = d3.select el
     .attr sz
@@ -79,4 +82,6 @@ createPlot = (el)->
         dx: if i == 1 then -8 else 8
         dy: 15
 
-savage createPlot, filename: "output/ternary.svg"
+  callback()
+
+module.exports = pipeline

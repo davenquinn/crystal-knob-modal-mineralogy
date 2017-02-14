@@ -33,7 +33,7 @@ createLegend = (el)->
     .text (d)->d.name
     .attr x: 10
 
-labelOffsets = util.loadYaml 'label-offsets.yaml'
+labelOffsets = util.loadYaml "label-offsets.yaml"
 
 module.exports = (ternary, data)->
 

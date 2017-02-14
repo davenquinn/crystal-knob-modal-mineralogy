@@ -1,6 +1,6 @@
 util = require './util'
 
-fields = util.loadYaml 'peridotite-fields.yaml'
+fields = util.loadYaml "peridotite-fields.yaml"
 
 module.exports = (ternary)->
   sel = ternary.plot()
